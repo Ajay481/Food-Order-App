@@ -6,7 +6,6 @@ const CartProvider = (props) => {
   const [totalAmount, setTotalAmount] = useState(0);
 
   const addItemToCartHandler = (item) => {
-
     let isPresent = false;
 
     for (var i = 0; i < items.length; i++) {
@@ -32,7 +31,22 @@ const CartProvider = (props) => {
     setTotalAmount(total);
     setItems(newItem);
   };
-  const removeItemFromCartHandler = (id) => {};
+  const removeItemFromCartHandler = (id) => {
+    console.log(id);
+    const newItem = items.map((item) => {
+      if (item.id === id) {
+        return { ...item, quantity: item.quantity - 1 };
+      }
+      return item;
+    });
+    const total = newItem.reduce(getSum, 0);
+
+    function getSum(total, newItem) {
+      return total + newItem.price * newItem.quantity;
+    }
+    setTotalAmount(total);
+    setItems(newItem);
+  };
 
   const cartContext = {
     items: items,
